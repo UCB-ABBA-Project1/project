@@ -48,6 +48,7 @@ $('button[type=submit]').on("click", function (event) {
             petDiv.addClass("pet-result");
 
             var imgDiv = $("<img>");
+
             var photosArray = pet.media.photos.photo;
             photosArray.forEach(image => {
                 if (image["@size"] == "x") {
