@@ -8,59 +8,25 @@
     <title>ABBA project</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
-    <style>
-        body {
-            background-image: url("assets/images/backgroundPET.png");
-        }
-
-        .nav {
-            background-color: green;
-            text-decoration-color: white;
-        }
-
-        .nav-link {
-            color: white;
-        }
-
-        .nav-link:hover {
-            color: white;
-            background-color: blue;
-        }
-
-        .jumbotron {
-            color: white;
-            background-color: black;
-            border: 1px red;
-            text-align: center;
-        }
-
-        #about {
-            background-color: orange;
-        }
-
-        #form {
-            background-color: black;
-            opacity: 20%;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
 </head>
 
 <body>
     <ul class="nav justify-content-end">
         <li class="nav-item">
-            <a class="nav-link active" href="#">Main Page</a>
+            <a class="nav-link active" href="index.html">Main Page</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="assets/about.html">About</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">SOMETHING ELSE</a>
+            <a class="nav-link" href="assets/SOMETHINGELSE.html">SOMETHING ELSE</a>
         </li>
     </ul>
     <div class="container">
         <div class="jumbotron jumbotron-fluid">
-            <div class="container">
+            <div class="container" id="jTronText">
                 <h1 class="display-4">
                     <strong>ADOPT A PET</strong>
                 </h1>
@@ -125,7 +91,8 @@
     </div>
 
     <div>
-        <!-- Empty DIV stuff -->
+        <div style="overflow-y: scroll; height:400px;">
+            
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
