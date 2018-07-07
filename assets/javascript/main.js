@@ -57,29 +57,49 @@ $('button[type=submit]').on("click", function (event) {
             });
             petDiv.append(imgDiv);
 
+            var petTxt = $("<div>");
+            petTxt.addClass("pet-text");
+
             var name = $("<h4>");
             name.text(pet.name.$t);
-            petDiv.append(name);
+            petTxt.append(name);
 
             var breed = $("<p>");
-            breed.text("Breed: " + pet.breeds.breed.$t);
-            petDiv.append(breed);
+            var petBreed = pet.breeds.breed.$t;
+            var breedTxt = '';
+            if (petBreed !== undefined) {
+                breedTxt = petBreed;
+            } else {
+                breedTxt = 'unspecified';
+            }
+            breed.text("Breed: " + breedTxt);
+            petTxt.append(breed);
 
             var gender = $("<p>");
             gender.text("Gender: " + pet.sex.$t);
-            petDiv.append(gender);
+            petTxt.append(gender);
 
             var ageType = $("<p>");
             ageType.text("Age: " + pet.age.$t);
-            petDiv.append(ageType);
+            petTxt.append(ageType);
 
             var description = $("<p>");
             description.text(pet.description.$t);
-            petDiv.append(description);
+            petTxt.append(description);
 
             var phone = $("<p>");
-            phone.text("Phone contact: " + pet.contact.phone.$t);
-            petDiv.append(phone);
+            var petPhone = pet.contact.phone.$t;
+            var phoneTxt = '';
+            console.log(petPhone == undefined);
+            if (petPhone !== undefined) {
+                phoneTxt = petPhone;
+            } else {
+                phoneTxt = 'unspecified';
+            }
+            phone.text("Phone contact: " + phoneTxt);
+            petTxt.append(phone);
+
+            petDiv.append(petTxt);
 
             $("#results").append(petDiv);
 
