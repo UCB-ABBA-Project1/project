@@ -4,6 +4,12 @@ var petApiSecret = '65bb1fcddf5de94b4da39e27c387bf5e';
 var queryString = 'https://api.petfinder.com/pet.find?key=' + petApiKey;
 queryString += '&format=json'
 
+jQuery.ajaxPrefilter(function (options) {
+    if (options.crossDomain && jQuery.support.cors) {
+        options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
+    }
+});
+
 $('button[type=submit]').on("click", function (event) {
     event.preventDefault();
 
@@ -12,15 +18,22 @@ $('button[type=submit]').on("click", function (event) {
     var sex = $('#sexType').val().trim();
     var zip = $('#inputZip').val().trim();
 
-    if (type !== '') queryString += '&animal=' + type;
-    if (age !== '') queryString += '&age=' + age;
-    if (sex !== '') queryString += '&sex=' + sex;
+    if (type !== 'Choose...') queryString += '&animal=' + type;
+    if (age !== 'Choose...') queryString += '&age=' + age;
+    if (sex !== 'Choose...') {
+        if (sex == 'Male') {
+            sex = 'M';
+        } else {
+            sex = 'F';
+        }
+        queryString += '&sex=' + sex;
+    }
     if (zip !== '') queryString += '&location=' + zip;
 
     $.ajax({
         url: queryString,
         method: "GET"
     }).then(function (response) {
-        console.log(response);
+        console.log(response.petfinder.pets);
     })
 })
