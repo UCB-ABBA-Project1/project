@@ -36,8 +36,8 @@
             background-color: orange;
         }
 
-        #form {
-            background-color: black;
-            opacity: 20%;
-            color: white;
+        #cardInfo {
+            float: right;
+            position: relative;
+            background-color: tan;
         }
