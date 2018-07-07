@@ -87,6 +87,10 @@ $('button[type=submit]').on("click", function (event) {
             ageType.text("Age: " + pet.age.$t);
             petTxt.append(ageType);
 
+            var size = $("<p>");
+            size.text("Size: " + pet.size.$t);
+            petTxt.append(size);
+
             var description = $("<p>");
             description.text(pet.description.$t);
             petTxt.append(description);
