@@ -42,7 +42,6 @@ $('button[type=submit]').on("click", function (event) {
     }).then(function (response) {
         $("#results").html("");
 
-        console.log(response.petfinder.pets.pet);
         var pets = response.petfinder.pets.pet;
         pets.forEach(pet => {
             var petDiv = $("<div>");
