@@ -1,8 +1,14 @@
 var petApiKey = '6ca77f8d1b56fdd653755579c78a336d';
 var petApiSecret = '65bb1fcddf5de94b4da39e27c387bf5e';
 
-var queryString = 'https://api.petfinder.com/pet.find?key=' + petApiKey;
-queryString += '&format=json'
+var queryString = '';
+
+var resetQueryString = function () {
+    queryString = 'https://api.petfinder.com/pet.find?key=' + petApiKey;
+    queryString += '&format=json'
+}
+
+resetQueryString();
 
 jQuery.ajaxPrefilter(function (options) {
     if (options.crossDomain && jQuery.support.cors) {
@@ -36,14 +42,13 @@ $('button[type=submit]').on("click", function (event) {
     }).then(function (response) {
         $("#results").html("");
 
-        console.log(response.petfinder.pets.pet);
         var pets = response.petfinder.pets.pet;
         pets.forEach(pet => {
             var petDiv = $("<div>");
-
+            petDiv.addClass("pet-result");
 
             var imgDiv = $("<img>");
-            //console.log(pet.media.photos);
+
             var photosArray = pet.media.photos.photo;
             photosArray.forEach(image => {
                 if (image["@size"] == "x") {
@@ -77,6 +82,8 @@ $('button[type=submit]').on("click", function (event) {
             petDiv.append(phone);
 
             $("#results").append(petDiv);
+
+            resetQueryString();
         });
     })
 })
