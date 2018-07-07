@@ -20,11 +20,13 @@ $('button[type=submit]').on("click", function (event) {
     event.preventDefault();
 
     var type = $('#animalType').val().trim();
+    var size = $('#sizeType').val().trim();
     var age = $('#ageType').val().trim();
     var sex = $('#sexType').val().trim();
     var zip = $('#inputZip').val().trim();
 
     if (type !== 'Choose...') queryString += '&animal=' + type;
+    if (size !== 'Choose...') queryString += '&size=' + size;
     if (age !== 'Choose...') queryString += '&age=' + age;
     if (sex !== 'Choose...') {
         if (sex == 'Male') {
@@ -44,6 +46,8 @@ $('button[type=submit]').on("click", function (event) {
 
         var pets = response.petfinder.pets.pet;
         pets.forEach(pet => {
+            console.log(pet);
+
             var petDiv = $("<div>");
             petDiv.addClass("pet-result");
 
