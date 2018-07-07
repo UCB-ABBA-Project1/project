@@ -34,6 +34,49 @@ $('button[type=submit]').on("click", function (event) {
         url: queryString,
         method: "GET"
     }).then(function (response) {
-        console.log(response.petfinder.pets);
+        $("#results").html("");
+
+        console.log(response.petfinder.pets.pet);
+        var pets = response.petfinder.pets.pet;
+        pets.forEach(pet => {
+            var petDiv = $("<div>");
+
+
+            var imgDiv = $("<img>");
+            //console.log(pet.media.photos);
+            var photosArray = pet.media.photos.photo;
+            photosArray.forEach(image => {
+                if (image["@size"] == "x") {
+                    imgDiv.attr("src", image.$t);
+                }
+            });
+            petDiv.append(imgDiv);
+
+            var name = $("<h4>");
+            name.text(pet.name.$t);
+            petDiv.append(name);
+
+            var breed = $("<p>");
+            breed.text("Breed: " + pet.breeds.breed.$t);
+            petDiv.append(breed);
+
+            var gender = $("<p>");
+            gender.text("Gender: " + pet.sex.$t);
+            petDiv.append(gender);
+
+            var ageType = $("<p>");
+            ageType.text("Age: " + pet.age.$t);
+            petDiv.append(ageType);
+
+            var description = $("<p>");
+            description.text(pet.description.$t);
+            petDiv.append(description);
+
+            var phone = $("<p>");
+            phone.text("Phone contact: " + pet.contact.phone.$t);
+            petDiv.append(phone);
+
+            $("#results").append(petDiv);
+        });
     })
 })
