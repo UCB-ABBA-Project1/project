@@ -1,0 +1,43 @@
+        body {
+            background-image: url("../images/backgroundPET1.jpg");
+        }
+
+        .nav {
+            background-color: green;
+            text-decoration-color: white;
+        }
+
+        .nav-link {
+            color: white;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background-color: blue;
+        }
+
+        .jumbotron {
+            background-image: url("../images/jumboTron.jpg");
+            height: 45%;
+            width: 45%;
+            background-size: cover;
+            text-align: left;
+        } 
+
+        #jTronText {
+            text-align: left;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .lead {
+            color: darkred;
+        }
+
+        #about {
+            background-color: orange;
+        }
+
+        #form {
+            background-color: black;
+            opacity: 20%;
+            color: white;
+        }
