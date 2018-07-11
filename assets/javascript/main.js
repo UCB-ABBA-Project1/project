@@ -57,7 +57,7 @@ $('button[type=submit]').on("click", function (event) {
     }).then(function (response) {
         $("#results").html("");
 
-        var petIndex = 0;
+        var petIndex = 1;
 
         var pets = response.petfinder.pets.pet;
         pets.forEach(pet => {
@@ -132,7 +132,7 @@ $('button[type=submit]').on("click", function (event) {
                 if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + '+' + addressStr;
 
                 //if (!addresses.includes(addressStr)) addresses.push(addressStr);
-                if (!Object.values(addresses).includes(addressStr)) mapQueryString += addressStr + '||';
+                if (!Object.values(addresses).includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
 
                 addresses[petIndex] = addressStr;
             }
