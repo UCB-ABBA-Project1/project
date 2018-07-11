@@ -8,34 +8,38 @@
     <title>ABBA project</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Inline|East+Sea+Dokdo|Fredericka+the+Great|Monoton|Nothing+You+Could+Do|Pacifico" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
 </head>
 
 <body>
-    <ul class="nav justify-content-end">
+    <!--nav bars-->
+    <ul class="nav justify-content-end navbar-fixed-top">
         <li class="nav-item">
             <a class="nav-link active" href="index.html">Main Page</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="assets/about.html">About</a>
+            <a class="nav-link" href="assets/about.html">Questions?</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="assets/SOMETHINGELSE.html">SOMETHING ELSE</a>
         </li>
     </ul>
+    <!--jumbotron title-->
     <div class="container">
         <div class="jumbotron jumbotron-fluid">
             <div class="container" id="jTronText">
                 <h1 class="display-4">
                     <strong>ADOPT A PET</strong>
                 </h1>
-                <p class="lead">Save a life, give a new life.</p>
+                <p class="lead">Give them a new life.</p>
             </div>
         </div>
     </div>
+    <!--collaping 'ABOUT' button-->
     <div class="container">
-        <p>
+    <p>
             <button id="about" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
                 aria-controls="collapseExample">
                 About
@@ -44,17 +48,24 @@
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
                 Find the the pet you've been wanting. Give a new life to an animal in need. Search nearby animals and search nearby adoption
-                centers by entering your zip code.
+                centers by entering your zip code. Hit the 'Main Page' button to restart. (top right)
             </div>
         </div>
     </div>
+    <!--scrolling chaos-->
+    <div class="container">
+                <marquee behavior="scroll" direction="left" scrollamount="3">😃ADOPT🐶🐴🐱🐭🐺🐦🐰</marquee>
+                <marquee behavior="scroll" direction="right" scrollamount="10">👉Free Search👈</marquee>
+                <marquee behavior="scroll" direction="left" scrollamount="15">🐕🐎🐈FIND THE ONE🐀🐩🐇</marquee>
+                <marquee behavior="scroll" direction="right" scrollamount="22">😍😍😍<strong>ADOPT</strong>❤❤❤❤</marquee>
+    </div>
 <br>
-
+    <!--Search parameters-->
     <div class="container">
         <form id="form">
             <div class="row">
                 <div class="form-group col-md-3">
-                    <label for="inputType">type</label>
+                    <label for="inputType" id="selectionFont">Type</label>
                     <select id="animalType" class="form-control">
                         <option selected>Choose...</option>
                         <option>barnyard</option>
@@ -67,7 +78,7 @@
                     </select>
                 </div> 
                 <div class="form-group col-md-3">
-                    <label for="inputType">Size</label>
+                    <label for="inputType" id="selectionFont">Size</label>
                     <select id="sizeType" class="form-control">
                         <option selected>Choose...</option>
                         <option>S</option>
@@ -77,7 +88,7 @@
                     </select>
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="inputType">Age</label>
+                    <label for="inputType" id="selectionFont">Age</label>
                     <select id="ageType" class="form-control">
                         <option selected>Choose...</option>
                         <option>Baby</option>
@@ -87,7 +98,7 @@
                     </select>
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="inputType">Sex</label>
+                    <label for="inputType" id="selectionFont">Sex</label>
                     <select id="sexType" class="form-control">
                         <option selected>Choose...</option>
                         <option>Male</option>
@@ -95,7 +106,7 @@
                     </select>
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="inputZip">Zip</label>
+                    <label for="inputZip" id="selectionFont">Zip</label>
                     <input type="text" class="form-control" id="inputZip">
                 </div>
             </div>
@@ -107,15 +118,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-                    <marquee behavior="scroll" direction="left" scrollamount="3">😃ADOPT🐶🐴🐱🐭🐺🐦🐰</marquee>
-                    <marquee behavior="scroll" direction="left" scrollamount="10">👉Free Search👈</marquee>
-                    <marquee behavior="scroll" direction="left" scrollamount="18">🐕🐎🐈FIND THE ONE🐀🐩🐇</marquee>
-                    <marquee behavior="scroll" direction="left" scrollamount="25">😍😍😍<strong>ADOPT</strong>❤❤❤❤</marquee>
-            </div>
-            <div class="col-md-5">
+            <div class="col-md-9">
                 <!--map here-->
             </div>
+            <!--team names-->
         <div class="col-md-3">
             <div class="card text-white mb-3" style="max-width: 18rem;" id="cardInfo">
             <div class="card-header">TEAM ABBA</div>
@@ -132,7 +138,7 @@
     </div>
 </div>
 
-
+<!--displayed results after search-->
     <div class="container">
         <div id="results">
 
