@@ -27,7 +27,7 @@ $('button[type=submit]').on("click", function (event) {
     var sex = $('#sexType').val().trim();
     var zip = $('#inputZip').val().trim();
 
-    var addresses = [];
+    var addresses = {};
 
     if (type !== 'Choose...') petQueryString += '&animal=' + type;
     if (size !== 'Choose...') petQueryString += '&size=' + size;
@@ -47,6 +47,8 @@ $('button[type=submit]').on("click", function (event) {
         method: "GET"
     }).then(function (response) {
         $("#results").html("");
+
+        var petIndex = 0;
 
         var pets = response.petfinder.pets.pet;
         pets.forEach(pet => {
@@ -114,16 +116,22 @@ $('button[type=submit]').on("click", function (event) {
             petDiv.append(petTxt);
 
             var petAddress = pet.contact
-            var addressStr = petAddress.address1.$t + ' ' + petAddress.city.$t + ', ' +
-                petAddress.state.$t + ' ' + petAddress.zip.$t;
+            if (petAddress.city.$t !== undefined && petAddress.state.$t !== undefined && petAddress.zip.$t !== undefined) {
+                var addressStr = petAddress.city.$t + ', ' +
+                    petAddress.state.$t + ' ' + petAddress.zip.$t;
 
-            //if (!addresses.includes(addressStr)) addresses.push(addressStr);
-            addresses.push(addressStr);
+                if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + ' ' + addressStr;
+
+                //if (!addresses.includes(addressStr)) addresses.push(addressStr);
+                addresses[petIndex] = addressStr;
+            }
 
             $("#results").append(petDiv);
 
-            resetPetQueryString();
+            petIndex++;
         });
+
+        resetPetQueryString();
 
         console.log(addresses);
     })
