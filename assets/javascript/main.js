@@ -1,14 +1,16 @@
 var petApiKey = '6ca77f8d1b56fdd653755579c78a336d';
 var petApiSecret = '65bb1fcddf5de94b4da39e27c387bf5e';
 
-var queryString = '';
+var mapQApiSecret = '1BYwMmUp5rI9OVgRVumVUiBrUG3u8IKl';
 
-var resetQueryString = function () {
-    queryString = 'https://api.petfinder.com/pet.find?key=' + petApiKey;
-    queryString += '&format=json'
+var petQueryString = '';
+
+var resetPetQueryString = function () {
+    petQueryString = 'https://api.petfinder.com/pet.find?key=' + petApiKey;
+    petQueryString += '&format=json'
 }
 
-resetQueryString();
+resetPetQueryString();
 
 jQuery.ajaxPrefilter(function (options) {
     if (options.crossDomain && jQuery.support.cors) {
@@ -25,21 +27,23 @@ $('button[type=submit]').on("click", function (event) {
     var sex = $('#sexType').val().trim();
     var zip = $('#inputZip').val().trim();
 
-    if (type !== 'Choose...') queryString += '&animal=' + type;
-    if (size !== 'Choose...') queryString += '&size=' + size;
-    if (age !== 'Choose...') queryString += '&age=' + age;
+    var addresses = [];
+
+    if (type !== 'Choose...') petQueryString += '&animal=' + type;
+    if (size !== 'Choose...') petQueryString += '&size=' + size;
+    if (age !== 'Choose...') petQueryString += '&age=' + age;
     if (sex !== 'Choose...') {
         if (sex == 'Male') {
             sex = 'M';
         } else {
             sex = 'F';
         }
-        queryString += '&sex=' + sex;
+        petQueryString += '&sex=' + sex;
     }
-    if (zip !== '') queryString += '&location=' + zip;
+    if (zip !== '') petQueryString += '&location=' + zip;
 
     $.ajax({
-        url: queryString,
+        url: petQueryString,
         method: "GET"
     }).then(function (response) {
         $("#results").html("");
@@ -98,7 +102,7 @@ $('button[type=submit]').on("click", function (event) {
             var phone = $("<p>");
             var petPhone = pet.contact.phone.$t;
             var phoneTxt = '';
-            console.log(petPhone == undefined);
+
             if (petPhone !== undefined) {
                 phoneTxt = petPhone;
             } else {
@@ -109,9 +113,18 @@ $('button[type=submit]').on("click", function (event) {
 
             petDiv.append(petTxt);
 
+            var petAddress = pet.contact
+            var addressStr = petAddress.address1.$t + ' ' + petAddress.city.$t + ', ' +
+                petAddress.state.$t + ' ' + petAddress.zip.$t;
+
+            //if (!addresses.includes(addressStr)) addresses.push(addressStr);
+            addresses.push(addressStr);
+
             $("#results").append(petDiv);
 
-            resetQueryString();
+            resetPetQueryString();
         });
+
+        console.log(addresses);
     })
 })
