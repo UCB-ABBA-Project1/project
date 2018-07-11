@@ -1,4 +1,5 @@
-        body {
+ 
+body {
             background-image: url("../images/backgroundPET1.jpg");
             background-repeat: no-repeat;
             background-position: top center;
@@ -68,4 +69,8 @@
             position: relative;
             background-color: tan;
             font-family: 'Fredericka the Great', cursive;
+        }
+        img {
+            height: 300px;
+            float: left;
         }
