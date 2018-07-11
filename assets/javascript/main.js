@@ -1,16 +1,25 @@
 var petApiKey = '6ca77f8d1b56fdd653755579c78a336d';
 var petApiSecret = '65bb1fcddf5de94b4da39e27c387bf5e';
 
-var mapQApiSecret = '1BYwMmUp5rI9OVgRVumVUiBrUG3u8IKl';
+var mapApiKey = '1BYwMmUp5rI9OVgRVumVUiBrUG3u8IKl';
 
 var petQueryString = '';
 
+var mapQueryString = '';
+
 var resetPetQueryString = function () {
     petQueryString = 'https://api.petfinder.com/pet.find?key=' + petApiKey;
-    petQueryString += '&format=json'
+    petQueryString += '&format=json';
+}
+
+var resetMapQueryString = function () {
+    mapQueryString = 'https://www.mapquestapi.com/staticmap/v5/map?key=' + mapApiKey;
+    mapQueryString += '&locations=';
 }
 
 resetPetQueryString();
+
+resetMapQueryString();
 
 jQuery.ajaxPrefilter(function (options) {
     if (options.crossDomain && jQuery.support.cors) {
@@ -117,12 +126,14 @@ $('button[type=submit]').on("click", function (event) {
 
             var petAddress = pet.contact
             if (petAddress.city.$t !== undefined && petAddress.state.$t !== undefined && petAddress.zip.$t !== undefined) {
-                var addressStr = petAddress.city.$t + ', ' +
-                    petAddress.state.$t + ' ' + petAddress.zip.$t;
+                var addressStr = petAddress.city.$t + ',' +
+                    petAddress.state.$t + '+' + petAddress.zip.$t;
 
-                if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + ' ' + addressStr;
+                if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + '+' + addressStr;
 
                 //if (!addresses.includes(addressStr)) addresses.push(addressStr);
+                if (!Object.values(addresses).includes(addressStr)) mapQueryString += addressStr + '||';
+
                 addresses[petIndex] = addressStr;
             }
 
@@ -131,8 +142,25 @@ $('button[type=submit]').on("click", function (event) {
             petIndex++;
         });
 
+        mapQueryString = mapQueryString.slice(0, -2);
+
+        var realMapStr = '';
+
+        for (var i = 0; i < mapQueryString.length; i++) {
+            if (mapQueryString[i] == ' ') {
+                realMapStr += '+';
+            } else {
+                realMapStr += mapQueryString[i];
+            }
+        }
+
+        var mapImg = $("<img>");
+        mapImg.attr("src", realMapStr);
+
+        $("#map").append(mapImg);
+
         resetPetQueryString();
 
-        console.log(addresses);
+        resetMapQueryString();
     })
 })
