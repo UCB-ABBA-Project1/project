@@ -36,7 +36,9 @@ $('button[type=submit]').on("click", function (event) {
     var sex = $('#sexType').val().trim();
     var zip = $('#inputZip').val().trim();
 
-    var addresses = {};
+    var addresses = [];
+
+    var usedAddresses = [];
 
     if (type !== 'Choose...') petQueryString += '&animal=' + type;
     if (size !== 'Choose...') petQueryString += '&size=' + size;
@@ -59,25 +61,47 @@ $('button[type=submit]').on("click", function (event) {
 
         var petIndex = 1;
 
+        var petElements = [];
+
+        var prevGroupDiv = '';
+
+        var prevAddress = '';
+
         var pets = response.petfinder.pets.pet;
+
+        if (pets.length == undefined) {
+            var temppet = pets;
+            pets = [];
+            pets.push(temppet);
+        }
+
         pets.forEach(pet => {
-            console.log(pet);
+            $("#map").html('');
+
+            var groupDiv = $("<div>");
+            groupDiv.addClass("location-group");
 
             var petDiv = $("<div>");
             petDiv.addClass("pet-result");
 
-            var imgDiv = $("<img>");
+            var imgDiv = $("<div>");
+            imgDiv.addClass("Pet-Pic");
 
-            var photosArray = pet.media.photos.photo;
-            photosArray.forEach(image => {
-                if (image["@size"] == "x") {
-                    imgDiv.attr("src", image.$t);
-                }
-            });
-            petDiv.append(imgDiv);
+            var petImg = $("<img>");
+
+            if (pet.media.photos && pet.media.photos.photo) {
+                var photosArray = pet.media.photos.photo;
+                photosArray.forEach(image => {
+                    if (image["@size"] == "x") {
+                        petImg.attr("src", image.$t);
+                    }
+                });
+                imgDiv.append(petImg);
+                petDiv.append(imgDiv);
+            }
 
             var petTxt = $("<div>");
-            petTxt.addClass("pet-text");
+            petTxt.addClass("Pet-Info");
 
             var name = $("<h4>");
             name.text(pet.name.$t);
@@ -127,17 +151,40 @@ $('button[type=submit]').on("click", function (event) {
             var petAddress = pet.contact
             if (petAddress.city.$t !== undefined && petAddress.state.$t !== undefined && petAddress.zip.$t !== undefined) {
                 var addressStr = petAddress.city.$t + ',' +
-                    petAddress.state.$t + '+' + petAddress.zip.$t;
+                    petAddress.state.$t + ' ' + petAddress.zip.$t;
 
-                if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + '+' + addressStr;
+                if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + ' ' + addressStr;
 
                 //if (!addresses.includes(addressStr)) addresses.push(addressStr);
-                if (!Object.values(addresses).includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
+                //if (!addresses.includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
+                if (addressStr !== prevAddress) {
+                    mapQueryString += addressStr + '|marker-' + petIndex + '||';
 
-                addresses[petIndex] = addressStr;
+                    if (prevGroupDiv !== '') $("#results").append(prevGroupDiv);
+
+                    var groupTitle = $("<h3>");
+                    groupTitle.text(addressStr);
+                    groupDiv.append(groupTitle);
+
+                    groupDiv.append(petDiv);
+                    //addresses.push(addressStr);
+
+                    prevGroupDiv = groupDiv;
+
+                    prevAddress = addressStr;
+                } else {
+                    prevGroupDiv.append(petDiv);
+                }
+            } else {
+                var noLocTitle = $("<h3>");
+                noLocTitle.text("No location");
+                groupDiv.append(noLocTitle);
+
+                groupDiv.append(petDiv);
+                $("#results").append(groupDiv);
             }
-
-            $("#results").append(petDiv);
+            //$("#results").append(petDiv);
+            petElements.push(petDiv);
 
             petIndex++;
         });
@@ -156,11 +203,16 @@ $('button[type=submit]').on("click", function (event) {
 
         var mapImg = $("<img>");
         mapImg.attr("src", realMapStr);
+        mapImg.attr("id", "map-img");
 
         $("#map").append(mapImg);
 
         resetPetQueryString();
 
         resetMapQueryString();
+
+        prevGroupDiv = '';
+
+        prevAddress = '';
     })
 })
