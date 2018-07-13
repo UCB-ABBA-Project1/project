@@ -75,16 +75,20 @@ body {
             height: 300px;
             float: left;
         }
-        .PetPic {
+        .Pet-Pic {
            
-       
+        border: solid darkred;
+        float: left;
+        height: 150px;
+        border-radius: 10px;
         
         }
         
         /* Clear floats after the columns */
-        .PetInfo:after {
+        .Pet-Info:after {
             content: "";
             display: flex;
             clear: both;
-            
+            border:solid;
+          
         }
