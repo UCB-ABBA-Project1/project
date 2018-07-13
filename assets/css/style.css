@@ -71,6 +71,20 @@ body {
             font-family: 'Fredericka the Great', cursive;
         }
         img {
+            border:solid;
             height: 300px;
             float: left;
+        }
+        #PetPic {
+           
+         border:solid darkred;
+        
+        }
+        
+        /* Clear floats after the columns */
+        #PetInfo:after {
+            content: "";
+            display: flex;
+            clear: both;
+            
         }
