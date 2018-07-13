@@ -53,171 +53,182 @@ $('button[type=submit]').on("click", function (event) {
     }
     if (zip !== '') petQueryString += '&location=' + zip;
 
-    $.ajax({
-        url: petQueryString,
-        method: "GET"
-    }).then(function (response) {
-        $("#results").html("");
+    if (petQueryString !== '') {
+        $.ajax({
+            url: petQueryString,
+            method: "GET"
+        }).then(function (response) {
+            $("#results").html("");
 
-        var petIndex = 1;
+            var petIndex = 1;
 
-        var petElements = [];
+            var petElements = [];
 
-        var prevGroupDiv = '';
+            var prevGroupDiv = '';
 
-        var prevAddress = '';
+            var prevAddress = '';
 
-        var pets = response.petfinder.pets.pet;
+            var pets = response.petfinder.pets.pet;
 
-        if (pets.length == undefined) {
-            var temppet = pets;
-            pets = [];
-            pets.push(temppet);
-        }
-
-        pets.forEach(pet => {
-            $("#map").html('');
-
-            var groupDiv = $("<div>");
-            groupDiv.addClass("location-group");
-
-            var petDiv = $("<div>");
-            petDiv.addClass("pet-result");
-
-            var imgDiv = $("<div>");
-            imgDiv.addClass("Pet-Pic");
-
-            var petImg = $("<img>");
-
-            if (pet.media.photos && pet.media.photos.photo) {
-                var photosArray = pet.media.photos.photo;
-                photosArray.forEach(image => {
-                    if (image["@size"] == "x") {
-                        petImg.attr("src", image.$t);
-                    }
-                });
-                imgDiv.append(petImg);
-                petDiv.append(imgDiv);
+            if (pets.length == undefined) {
+                var temppet = pets;
+                pets = [];
+                pets.push(temppet);
             }
 
-            var petInfo = $("<div>");
-            petInfo.addClass("Pet-Info");
+            pets.forEach(pet => {
+                $("#map").html('');
 
-            var petTxt = $("<div>");
-            petTxt.addClass("pet-text");
+                var groupDiv = $("<div>");
+                groupDiv.addClass("location-group");
 
-            var name = $("<h4>");
-            name.text(pet.name.$t);
-            petTxt.append(name);
+                var rowDiv = $("<div>");
+                rowDiv.addClass("row");
 
-            var breed = $("<p>");
-            var petBreed = pet.breeds.breed.$t;
-            var breedTxt = '';
-            if (petBreed !== undefined) {
-                breedTxt = petBreed;
-            } else {
-                breedTxt = 'unspecified';
-            }
-            breed.text("Breed: " + breedTxt);
-            petTxt.append(breed);
+                var petDiv = $("<div>");
+                petDiv.addClass("pet-result");
 
-            var gender = $("<p>");
-            gender.text("Gender: " + pet.sex.$t);
-            petTxt.append(gender);
+                var imgDiv = $("<div>");
+                imgDiv.addClass("Pet-Pic", "col-md-3");
 
-            var ageType = $("<p>");
-            ageType.text("Age: " + pet.age.$t);
-            petTxt.append(ageType);
+                var petImg = $("<img>");
 
-            var size = $("<p>");
-            size.text("Size: " + pet.size.$t);
-            petTxt.append(size);
-
-            var description = $("<p>");
-            description.text(pet.description.$t);
-            petTxt.append(description);
-
-            var phone = $("<p>");
-            var petPhone = pet.contact.phone.$t;
-            var phoneTxt = '';
-
-            if (petPhone !== undefined) {
-                phoneTxt = petPhone;
-            } else {
-                phoneTxt = 'unspecified';
-            }
-            phone.text("Phone contact: " + phoneTxt);
-            petTxt.append(phone);
-
-            petInfo.append(petTxt);
-
-            petDiv.append(petInfo);
-
-            var petAddress = pet.contact
-            if (petAddress.city.$t !== undefined && petAddress.state.$t !== undefined && petAddress.zip.$t !== undefined) {
-                var addressStr = petAddress.city.$t + ',' +
-                    petAddress.state.$t + ' ' + petAddress.zip.$t;
-
-                if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + ' ' + addressStr;
-
-                //if (!addresses.includes(addressStr)) addresses.push(addressStr);
-                //if (!addresses.includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
-                if (addressStr !== prevAddress) {
-                    mapQueryString += addressStr + '|marker-' + petIndex + '||';
-
-                    if (prevGroupDiv !== '') $("#results").append(prevGroupDiv);
-
-                    var groupTitle = $("<h3>");
-                    groupTitle.text(petIndex + ": " + addressStr);
-                    groupDiv.append(groupTitle);
-
-                    groupDiv.append(petDiv);
-                    //addresses.push(addressStr);
-
-                    prevGroupDiv = groupDiv;
-
-                    prevAddress = addressStr;
-
-                    petIndex++;
-                } else {
-                    prevGroupDiv.append(petDiv);
+                if (pet.media.photos && pet.media.photos.photo) {
+                    var photosArray = pet.media.photos.photo;
+                    photosArray.forEach(image => {
+                        if (image["@size"] == "x") {
+                            petImg.attr("src", image.$t);
+                        }
+                    });
+                    imgDiv.append(petImg);
+                    petDiv.append(imgDiv);
                 }
-            } else {
-                var noLocTitle = $("<h3>");
-                noLocTitle.text("No location");
-                groupDiv.append(noLocTitle);
 
-                groupDiv.append(petDiv);
-                $("#results").append(groupDiv);
+                var separator = $("<div>");
+                separator.addClass("col-md-1");
+                petDiv.append(separator);
+
+                var petInfo = $("<div>");
+                petInfo.addClass("Pet-Info", "col-md-8");
+
+                var petTxt = $("<div>");
+                petTxt.addClass("pet-text");
+
+                var name = $("<h4>");
+                name.text(pet.name.$t);
+                petTxt.append(name);
+
+                var breed = $("<p>");
+                var petBreed = pet.breeds.breed.$t;
+                var breedTxt = '';
+                if (petBreed !== undefined) {
+                    breedTxt = petBreed;
+                } else {
+                    breedTxt = 'unspecified';
+                }
+                breed.text("Breed: " + breedTxt);
+                petTxt.append(breed);
+
+                var gender = $("<p>");
+                gender.text("Gender: " + pet.sex.$t);
+                petTxt.append(gender);
+
+                var ageType = $("<p>");
+                ageType.text("Age: " + pet.age.$t);
+                petTxt.append(ageType);
+
+                var size = $("<p>");
+                size.text("Size: " + pet.size.$t);
+                petTxt.append(size);
+
+                var description = $("<p>");
+                description.text(pet.description.$t);
+                petTxt.append(description);
+
+                var phone = $("<p>");
+                var petPhone = pet.contact.phone.$t;
+                var phoneTxt = '';
+
+                if (petPhone !== undefined) {
+                    phoneTxt = petPhone;
+                } else {
+                    phoneTxt = 'unspecified';
+                }
+                phone.text("Phone contact: " + phoneTxt);
+                petTxt.append(phone);
+
+                petInfo.append(petTxt);
+
+                petDiv.append(petInfo);
+
+                rowDiv.append(petDiv);
+
+                var petAddress = pet.contact
+                if (petAddress.city.$t !== undefined && petAddress.state.$t !== undefined && petAddress.zip.$t !== undefined) {
+                    var addressStr = petAddress.city.$t + ',' +
+                        petAddress.state.$t + ' ' + petAddress.zip.$t;
+
+                    if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + ' ' + addressStr;
+
+                    //if (!addresses.includes(addressStr)) addresses.push(addressStr);
+                    //if (!addresses.includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
+                    if (addressStr !== prevAddress) {
+                        mapQueryString += addressStr + '|marker-' + petIndex + '||';
+
+                        if (prevGroupDiv !== '') $("#results").append(prevGroupDiv);
+
+                        var groupTitle = $("<h3>");
+                        groupTitle.text(petIndex + ": " + addressStr);
+                        groupDiv.append(groupTitle);
+
+                        groupDiv.append(rowDiv);
+                        //addresses.push(addressStr);
+
+                        prevGroupDiv = groupDiv;
+
+                        prevAddress = addressStr;
+
+                        petIndex++;
+                    } else {
+                        prevGroupDiv.append(rowDiv);
+                    }
+                } else {
+                    var noLocTitle = $("<h3>");
+                    noLocTitle.text("No location");
+                    groupDiv.append(noLocTitle);
+
+                    groupDiv.append(rowDiv);
+                    $("#results").append(groupDiv);
+                }
+                //$("#results").append(petDiv);
+                petElements.push(petDiv);
+            });
+
+            mapQueryString = mapQueryString.slice(0, -2);
+
+            var realMapStr = '';
+
+            for (var i = 0; i < mapQueryString.length; i++) {
+                if (mapQueryString[i] == ' ') {
+                    realMapStr += '+';
+                } else {
+                    realMapStr += mapQueryString[i];
+                }
             }
-            //$("#results").append(petDiv);
-            petElements.push(petDiv);
-        });
 
-        mapQueryString = mapQueryString.slice(0, -2);
+            var mapImg = $("<img>");
+            mapImg.attr("src", realMapStr);
+            mapImg.attr("id", "map-img");
 
-        var realMapStr = '';
+            $("#map").append(mapImg);
 
-        for (var i = 0; i < mapQueryString.length; i++) {
-            if (mapQueryString[i] == ' ') {
-                realMapStr += '+';
-            } else {
-                realMapStr += mapQueryString[i];
-            }
-        }
+            resetPetQueryString();
 
-        var mapImg = $("<img>");
-        mapImg.attr("src", realMapStr);
-        mapImg.attr("id", "map-img");
+            resetMapQueryString();
 
-        $("#map").append(mapImg);
+            prevGroupDiv = '';
 
-        resetPetQueryString();
-
-        resetMapQueryString();
-
-        prevGroupDiv = '';
-
-        prevAddress = '';
-    })
+            prevAddress = '';
+        })
+    }
 })
