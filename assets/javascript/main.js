@@ -84,20 +84,24 @@ $('button[type=submit]').on("click", function (event) {
             var petDiv = $("<div>");
             petDiv.addClass("pet-result");
 
-            var imgDiv = $("<img>");
+            var imgDiv = $("<div>");
+            imgDiv.addClass("Pet-Pic");
+
+            var petImg = $("<img>");
 
             if (pet.media.photos && pet.media.photos.photo) {
                 var photosArray = pet.media.photos.photo;
                 photosArray.forEach(image => {
                     if (image["@size"] == "x") {
-                        imgDiv.attr("src", image.$t);
+                        petImg.attr("src", image.$t);
                     }
                 });
+                imgDiv.append(petImg);
                 petDiv.append(imgDiv);
             }
 
             var petTxt = $("<div>");
-            petTxt.addClass("pet-text");
+            petTxt.addClass("Pet-Info");
 
             var name = $("<h4>");
             name.text(pet.name.$t);
