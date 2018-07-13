@@ -102,7 +102,7 @@ $('button[type=submit]').on("click", function (event) {
                 petDiv.addClass("pet-result");
 
                 var imgDiv = $("<div>");
-                imgDiv.addClass("Pet-Pic", "col-md-3");
+                imgDiv.addClass("Pet-Pic col-md-3");
 
                 var petImg = $("<img>");
 
@@ -122,7 +122,7 @@ $('button[type=submit]').on("click", function (event) {
                 petDiv.append(separator);
 
                 var petInfo = $("<div>");
-                petInfo.addClass("Pet-Info", "col-md-8");
+                petInfo.addClass("Pet-Info col-md-8");
 
                 var petTxt = $("<div>");
                 petTxt.addClass("pet-text");
