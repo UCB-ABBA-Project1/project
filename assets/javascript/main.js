@@ -100,8 +100,11 @@ $('button[type=submit]').on("click", function (event) {
                 petDiv.append(imgDiv);
             }
 
+            var petInfo = $("<div>");
+            petInfo.addClass("Pet-Info");
+
             var petTxt = $("<div>");
-            petTxt.addClass("Pet-Info");
+            petTxt.addClass("pet-text");
 
             var name = $("<h4>");
             name.text(pet.name.$t);
@@ -146,7 +149,9 @@ $('button[type=submit]').on("click", function (event) {
             phone.text("Phone contact: " + phoneTxt);
             petTxt.append(phone);
 
-            petDiv.append(petTxt);
+            petInfo.append(petTxt);
+
+            petDiv.append(petInfo);
 
             var petAddress = pet.contact
             if (petAddress.city.$t !== undefined && petAddress.state.$t !== undefined && petAddress.zip.$t !== undefined) {
@@ -163,7 +168,7 @@ $('button[type=submit]').on("click", function (event) {
                     if (prevGroupDiv !== '') $("#results").append(prevGroupDiv);
 
                     var groupTitle = $("<h3>");
-                    groupTitle.text(addressStr);
+                    groupTitle.text(petIndex + ": " + addressStr);
                     groupDiv.append(groupTitle);
 
                     groupDiv.append(petDiv);
@@ -172,6 +177,8 @@ $('button[type=submit]').on("click", function (event) {
                     prevGroupDiv = groupDiv;
 
                     prevAddress = addressStr;
+
+                    petIndex++;
                 } else {
                     prevGroupDiv.append(petDiv);
                 }
@@ -185,8 +192,6 @@ $('button[type=submit]').on("click", function (event) {
             }
             //$("#results").append(petDiv);
             petElements.push(petDiv);
-
-            petIndex++;
         });
 
         mapQueryString = mapQueryString.slice(0, -2);
