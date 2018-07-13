@@ -36,7 +36,9 @@ $('button[type=submit]').on("click", function (event) {
     var sex = $('#sexType').val().trim();
     var zip = $('#inputZip').val().trim();
 
-    var addresses = {};
+    var addresses = [];
+
+    var usedAddresses = [];
 
     if (type !== 'Choose...') petQueryString += '&animal=' + type;
     if (size !== 'Choose...') petQueryString += '&size=' + size;
@@ -59,22 +61,35 @@ $('button[type=submit]').on("click", function (event) {
 
         var petIndex = 1;
 
+        var petElements = [];
+
         var pets = response.petfinder.pets.pet;
+
+        if (pets.length == undefined) {
+            var temppet = pets;
+            pets = [];
+            pets.push(temppet);
+        }
+
         pets.forEach(pet => {
             console.log(pet);
+
+            $("#map").html('');
 
             var petDiv = $("<div>");
             petDiv.addClass("pet-result");
 
             var imgDiv = $("<img>");
 
-            var photosArray = pet.media.photos.photo;
-            photosArray.forEach(image => {
-                if (image["@size"] == "x") {
-                    imgDiv.attr("src", image.$t);
-                }
-            });
-            petDiv.append(imgDiv);
+            if (pet.media.photos && pet.media.photos.photo) {
+                var photosArray = pet.media.photos.photo;
+                photosArray.forEach(image => {
+                    if (image["@size"] == "x") {
+                        imgDiv.attr("src", image.$t);
+                    }
+                });
+                petDiv.append(imgDiv);
+            }
 
             var petTxt = $("<div>");
             petTxt.addClass("pet-text");
@@ -132,15 +147,22 @@ $('button[type=submit]').on("click", function (event) {
                 if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + '+' + addressStr;
 
                 //if (!addresses.includes(addressStr)) addresses.push(addressStr);
-                if (!Object.values(addresses).includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
+                if (!addresses.includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
 
-                addresses[petIndex] = addressStr;
+                addresses.push(addressStr);
+
+                var addressDiv = $("<p>")
+                addressDiv.text(addressStr);
+                petDiv.append(addressDiv);
             }
-
             $("#results").append(petDiv);
+            petElements.push(petDiv);
 
             petIndex++;
         });
+
+        console.log(addresses);
+        console.log(petElements);
 
         mapQueryString = mapQueryString.slice(0, -2);
 
@@ -156,6 +178,9 @@ $('button[type=submit]').on("click", function (event) {
 
         var mapImg = $("<img>");
         mapImg.attr("src", realMapStr);
+        mapImg.attr("id", "map-img");
+
+        console.log(addresses);
 
         $("#map").append(mapImg);
 
