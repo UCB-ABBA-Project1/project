@@ -81,6 +81,7 @@ body {
         float: left;
         height: 150px;
         border-radius: 10px;
+        overflow: hidden;
         
         }
         
@@ -90,5 +91,6 @@ body {
             display: flex;
             clear: both;
             border:solid;
+            overflow: hidden;
           
         }
