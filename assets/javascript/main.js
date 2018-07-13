@@ -27,6 +27,19 @@ jQuery.ajaxPrefilter(function (options) {
     }
 });
 
+$(document).ready(function () {
+    $(function () {
+        $('#submitBtn').attr('disabled', 'disabled');
+    });
+    $('input[type=text]').keyup(function () {
+        if ($('#inputZip').val() != '') {
+            $('#submitBtn').removeAttr('disabled');
+        } else {
+            $('#submitBtn').attr('disabled', 'disabled');
+        }
+    });
+});
+
 $('button[type=submit]').on("click", function (event) {
     event.preventDefault();
 
