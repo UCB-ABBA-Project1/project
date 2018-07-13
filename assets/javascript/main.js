@@ -63,6 +63,10 @@ $('button[type=submit]').on("click", function (event) {
 
         var petElements = [];
 
+        var prevGroupDiv = '';
+
+        var prevAddress = '';
+
         var pets = response.petfinder.pets.pet;
 
         if (pets.length == undefined) {
@@ -72,9 +76,10 @@ $('button[type=submit]').on("click", function (event) {
         }
 
         pets.forEach(pet => {
-            console.log(pet);
-
             $("#map").html('');
+
+            var groupDiv = $("<div>");
+            groupDiv.addClass("location-group");
 
             var petDiv = $("<div>");
             petDiv.addClass("pet-result");
@@ -142,27 +147,43 @@ $('button[type=submit]').on("click", function (event) {
             var petAddress = pet.contact
             if (petAddress.city.$t !== undefined && petAddress.state.$t !== undefined && petAddress.zip.$t !== undefined) {
                 var addressStr = petAddress.city.$t + ',' +
-                    petAddress.state.$t + '+' + petAddress.zip.$t;
+                    petAddress.state.$t + ' ' + petAddress.zip.$t;
 
-                if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + '+' + addressStr;
+                if (petAddress.address1.$t !== undefined) addressStr = petAddress.address1.$t + ' ' + addressStr;
 
                 //if (!addresses.includes(addressStr)) addresses.push(addressStr);
-                if (!addresses.includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
+                //if (!addresses.includes(addressStr)) mapQueryString += addressStr + '|marker-' + petIndex + '||';
+                if (addressStr !== prevAddress) {
+                    mapQueryString += addressStr + '|marker-' + petIndex + '||';
 
-                addresses.push(addressStr);
+                    if (prevGroupDiv !== '') $("#results").append(prevGroupDiv);
 
-                var addressDiv = $("<p>")
-                addressDiv.text(addressStr);
-                petDiv.append(addressDiv);
+                    var groupTitle = $("<h3>");
+                    groupTitle.text(addressStr);
+                    groupDiv.append(groupTitle);
+
+                    groupDiv.append(petDiv);
+                    //addresses.push(addressStr);
+
+                    prevGroupDiv = groupDiv;
+
+                    prevAddress = addressStr;
+                } else {
+                    prevGroupDiv.append(petDiv);
+                }
+            } else {
+                var noLocTitle = $("<h3>");
+                noLocTitle.text("No location");
+                groupDiv.append(noLocTitle);
+
+                groupDiv.append(petDiv);
+                $("#results").append(groupDiv);
             }
-            $("#results").append(petDiv);
+            //$("#results").append(petDiv);
             petElements.push(petDiv);
 
             petIndex++;
         });
-
-        console.log(addresses);
-        console.log(petElements);
 
         mapQueryString = mapQueryString.slice(0, -2);
 
@@ -180,12 +201,14 @@ $('button[type=submit]').on("click", function (event) {
         mapImg.attr("src", realMapStr);
         mapImg.attr("id", "map-img");
 
-        console.log(addresses);
-
         $("#map").append(mapImg);
 
         resetPetQueryString();
 
         resetMapQueryString();
+
+        prevGroupDiv = '';
+
+        prevAddress = '';
     })
 })
