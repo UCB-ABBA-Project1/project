@@ -75,14 +75,14 @@ body {
             height: 300px;
             float: left;
         }
-        #PetPic {
+        .PetPic {
            
        
         
         }
         
         /* Clear floats after the columns */
-        #PetInfo:after {
+        .PetInfo:after {
             content: "";
             display: flex;
             clear: both;
