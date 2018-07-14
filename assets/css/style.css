@@ -92,7 +92,7 @@ body {
           
             border-left: 10px;
         }
-        .col-md-9 {
+        .col-md-8 {
             -ms-flex: 0 0 75%;
             flex: 0 0 75%;
             max-width: 100%;
